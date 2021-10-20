@@ -4,6 +4,8 @@ from django.dispatch import receiver
 
 from django.contrib.auth.models import User
 from .models import Profile
+from django.core.mail import send_mail
+from django.conf import settings
 
 # @receiver(post_save,sender=Profile)
 def createProfile(sender,instance,created,**kwargs):
@@ -16,6 +18,16 @@ def createProfile(sender,instance,created,**kwargs):
             username =user.username,
             email=user.email,
             name=user.first_name,
+        )
+        subject='Welcome to MilieuDev Search'
+        message='Meet best tech Opportunity'
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [profile.email],
+            fail_silently=False
         )
 
 
